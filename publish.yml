@@ -1,0 +1,8 @@
+---
+- name: Configure webserver with apache
+  hosts: p2p
+  become: True
+
+  tasks:
+    - name: Install apache2
+      apt: name=apache2 update_cache=yes cache_valid_time=3600
