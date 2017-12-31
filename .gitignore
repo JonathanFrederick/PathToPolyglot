@@ -1,2 +1,3 @@
 # Ansible files
 *.retry
+apache2.conf
