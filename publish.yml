@@ -13,12 +13,10 @@
     - name: allow apache2 access through firewall
       ufw: rule=allow direction=in name="Apache Full"
 
-    - name: copy index
-      copy: src=index.html dest=/var/www/html/
-    - name: copy assets
-      copy: src=assets dest=/var/www/html/
-    - name: copy images
-      copy: src=images dest=/var/www/html/
+    - name: copy templates
+      copy: src=templates dest=/var/www/html/
+    - name: copy static files
+      copy: src=static dest=/var/www/html/
     - name: copy posts
       copy: src=posts dest=/var/www/html/
 
