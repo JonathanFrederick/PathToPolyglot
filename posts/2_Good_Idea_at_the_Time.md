@@ -1,0 +1,7 @@
+## It seemed like a good idea at the time
+
+I think I've decided to use Ansible for deploying the blog.  I know, you're probably saying "But Jonathan, isn't that overkill for a simple site?" to which I would say "You're not wrong."  My reasoning is that I'd like to use Ansible and Vagrant to learn how to use Hadoop sometime in the near future.  Even if I don't get to Hadoop anytime soon, Ansible is still super powerful.  I also already have a little exposure to Salt for deployment and I'd like to expand my toolbox and/or comfort zone.
+
+I began using the [introduction](http://docs.ansible.com/ansible/latest/intro_getting_started.html) in Ansible's documentation pages.  Their intro is very thorough, but for my purposes, I'm glad I found [Ansible Up & Running](http://www.ansiblebook.com/) by Hochstein and Moser.  While Ansible does a good job of introducing all the features, Up and Running provides a better tutorial.  In the first couple chapters you have been introduced to some of the basics, but you've done so by getting your hands dirty and building something that resembles a use-case.  It may well be that Lorin Hochstein's stint as an educator is shining through.
+
+For my current needs, following just the first two chapters and then glancing at the chapters on inventories and variables seems to be sufficient.  As a bonus, the official Ansible documentation makes more sense and is easier to digest now.
