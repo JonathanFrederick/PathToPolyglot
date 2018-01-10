@@ -19,6 +19,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config| \r
   config.vm.network \"forwarded_port\", guest: 443, host: 8443 \r
 end" > Vagrantfile
   fi
+
+  vagrant up
+
+
+  vagrant halt
+
 else
   echo "'$environment' is not a valid environment"
 fi
