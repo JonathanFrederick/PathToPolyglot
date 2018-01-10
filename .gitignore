@@ -4,3 +4,6 @@ apache2.conf
 
 # Python files
 *.pyc
+
+# Vagrant files
+Vagrantfile
