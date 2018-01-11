@@ -1,6 +1,6 @@
 ---
 - name: Configure webserver with apache
-  hosts: p2p
+  hosts: "{{ env_host }}"
   become: True
 
   tasks:

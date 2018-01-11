@@ -2,7 +2,7 @@ environment="$1"
 
 if [ $environment = "deployment" ]
 then
-  ansible-playbook publish.yml
+  ansible-playbook -e env_host=p2p publish.yml
 elif [ $environment = "staging" ]
 then
   if [ -d .vagrant ] && [ -e Vagrantfile ]
@@ -21,7 +21,7 @@ end" > Vagrantfile
   fi
 
   vagrant up
-
+  ansible-playbook -e "env_host=p2p-staging" publish.yml
 
   vagrant halt
 
