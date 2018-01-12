@@ -3,7 +3,8 @@ environment="$1"
 if [ $environment = "deployment" ]
 then
   ansible-playbook -e env_host=p2p publish.yml
-  pytest test_functionality.py $P2PADDRESS
+  export TEST_ADDRESS=$P2PADDRESS
+  pytest test_functionality.py
 
 elif [ $environment = "staging" ]
 then
@@ -24,7 +25,8 @@ end" > Vagrantfile
 
   vagrant up
   ansible-playbook -e "env_host=p2p-staging" publish.yml
-  pytest test_functionality.py 127.0.0.1:8080
+  export TEST_ADDRESS=127.0.0.1:8080
+  pytest test_functionality.py
   vagrant halt
 
 else
