@@ -8,3 +8,5 @@ apache2.conf
 # Vagrant files
 Vagrantfile
 .vagrant/
+.cache/
+.coverage
