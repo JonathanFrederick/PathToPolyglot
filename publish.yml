@@ -6,9 +6,21 @@
   tasks:
     - name: Install apache2
       apt: name=apache2 update_cache=yes cache_valid_time=3600
+    - name: Install mod_wsgi
+      apt: name=libapache2-mod-wsgi update_cache=yes cache_valid_time=3600
+    - name: Enable mod_wsgi
+      shell: a2enmod wsgi
+    - name: Install pip
+      apt: name=python-pip update_cache=yes cache_valid_time=3600
+    - name: Install virtualenv
+      pip:
+        name: virtualenv
+
 
     - name: copy apache config file
       copy: src=apache2.conf dest=/etc/apache2/apache2.conf
+    - name: copy Apache config file for app
+      copy: src=p2p.conf dest=/etc/apache2/sites-available/
 
     - name: allow apache2 access through firewall
       ufw: rule=allow direction=in name="Apache Full"
@@ -19,7 +31,24 @@
       copy: src=static dest=/var/www/html/
     - name: copy posts
       copy: src=posts dest=/var/www/html/
+    - name: copy app
+      copy: src=p2p.py dest=/var/www/html/
+    - name: copy p2p.wsgi
+      copy: src=p2p.wsgi dest=/var/www/html/
+    - name: copy requirements
+      copy: src=requirements.txt dest=/var/www/html/
 
+    - name: Create virtual environment
+      pip:
+        requirements: /var/www/html/requirements.txt
+        virtualenv: /var/www/html/p2p_venv
+        virtualenv_python: python3
+
+    - name: enable virtualhost
+      shell: a2ensite p2p
 
     - name: restart apache2
       service: name=apache2 state=restarted
+
+    # - name: Start flask app
+    #   shell: /var/www/html/p2p_venv/bin/python3.4 /var/www/html/p2p.py
