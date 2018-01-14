@@ -1,3 +1,12 @@
 # Ansible files
 *.retry
 apache2.conf
+
+# Python files
+*.pyc
+
+# Vagrant files
+Vagrantfile
+.vagrant/
+.cache/
+.coverage

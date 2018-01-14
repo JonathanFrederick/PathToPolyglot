@@ -1,27 +1,49 @@
 ---
 - name: Configure webserver with apache
-  hosts: p2p
+  hosts: "{{ env_host }}"
   become: True
 
   tasks:
     - name: Install apache2
       apt: name=apache2 update_cache=yes cache_valid_time=3600
+    - name: Install python-dev
+      apt: name=python-dev update_cache=yes cache_valid_time=3600
+    - name: Install mod_wsgi
+      apt: name=libapache2-mod-wsgi update_cache=yes cache_valid_time=3600
+    - name: Enable mod_wsgi
+      shell: a2enmod wsgi
+    - name: Install pip
+      apt: name=python-pip update_cache=yes cache_valid_time=3600
+    - name: Install virtualenv
+      pip:
+        name: virtualenv
 
-    - name: copy apache config file
-      copy: src=apache2.conf dest=/etc/apache2/apache2.conf
+
+    # - name: copy apache config file
+    #   copy: src=apache2.conf dest=/etc/apache2/apache2.conf
+    - name: copy Apache config file for app
+      copy: src=p2p.conf dest=/etc/apache2/sites-available/
+    - name: enable virtualhost for app
+      shell: a2ensite p2p
 
     - name: allow apache2 access through firewall
       ufw: rule=allow direction=in name="Apache Full"
 
-    - name: copy index
-      copy: src=index.html dest=/var/www/html/
-    - name: copy assets
-      copy: src=assets dest=/var/www/html/
-    - name: copy images
-      copy: src=images dest=/var/www/html/
-    - name: copy posts
-      copy: src=posts dest=/var/www/html/
+    - name: copy Flask app
+      copy: src=p2p/ dest=/var/www/p2p/p2p/
+    - name: copy p2p.wsgi
+      copy: src=p2p.wsgi dest=/var/www/p2p/
+    - name: copy requirements
+      copy: src=requirements.txt dest=/var/www/p2p/
 
+    - name: Create virtual environment
+      pip:
+        requirements: /var/www/p2p/requirements.txt
+        virtualenv: /var/www/p2p/p2p/p2p_venv
+        virtualenv_python: python3
 
     - name: restart apache2
       service: name=apache2 state=restarted
+
+    # - name: Start flask app
+    #   shell: /var/www/html/p2p_venv/bin/python3.4 /var/www/html/p2p.py
