@@ -1,6 +1,6 @@
 ---
 - name: Configure webserver with apache
-  hosts: "{{ env_host }}"
+  hosts: webservers  # "{{ env_host }}"
   become: True
 
   tasks:
