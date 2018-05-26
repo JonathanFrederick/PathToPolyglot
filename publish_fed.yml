@@ -5,24 +5,32 @@
 
   tasks:
     - name: Install apache2
-      apt: name=apache2 update_cache=yes cache_valid_time=3600
-    - name: Install python-dev
-      apt: name=python-dev update_cache=yes cache_valid_time=3600
-    - name: Install mod_wsgi
-      apt: name=libapache2-mod-wsgi update_cache=yes cache_valid_time=3600
-    - name: Enable mod_wsgi
-      shell: a2enmod wsgi
-    - name: Install pip
-      apt: name=python-pip update_cache=yes cache_valid_time=3600
+      dnf: name={{ item }} state=latest
+      with_items:
+        - httpd
+        - python3-pip
     - name: Install virtualenv
       pip:
         name: virtualenv
 
+    - name: add http and https
+      firewalld: service={{ item }} permanent=true state=enabled immediate=yes zone=FedoraServer
+      with_items:
+        - http
+        - https
+
+    - name: Start http daemon
+      systemd: state=started name=httpd
+    # - name: open public http ports
+    #   firewalld: port=80/tcp zone=public permanent=true state=enabled immediate=yes
+    # - name: open public https ports
+    #   firewalld: port=443/tcp zone=public permanent=true state=enabled immediate=yes
+
 
     # - name: copy apache config file
     #   copy: src=apache2.conf dest=/etc/apache2/apache2.conf
-    - name: copy Apache config file for app
-      copy: src=p2p.conf dest=/etc/apache2/sites-available/
+    # - name: copy Apache config file for app
+    #   copy: src=p2p.conf dest=/etc/apache2/sites-available/
     - name: enable virtualhost for app
       shell: a2ensite p2p
 
